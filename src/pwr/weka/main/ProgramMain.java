@@ -1,5 +1,7 @@
 package pwr.weka.main;
 
+import java.io.PrintWriter;
+
 import pwr.weka.crossvalidation.CrossValidation;
 import pwr.weka.utils.LoadInstances;
 import weka.classifiers.Classifier;
@@ -17,7 +19,7 @@ import weka.core.Instances;
 public class ProgramMain {
 	public static void main(String[] args){
 		int numFolds = 10;
-		int numReps = 1;
+		int numReps = 5;
 		if(args.length == 1) {numFolds = Integer.parseInt(args[0]); numReps = 1;}
 		if(args.length == 2) {
 			numFolds = Integer.parseInt(args[0]);
@@ -31,6 +33,10 @@ public class ProgramMain {
 			CrossValidation cv = new CrossValidation();
 			Classifier classifier = (Classifier)new NaiveBayes();
 			cv.doCrossValidation(data, classifier , numFolds, numReps);
+			System.out.println(cv.getSummary());
+			PrintWriter out = new PrintWriter("NaiveBayes.txt");
+			out.println(cv.getSummary());
+			out.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
